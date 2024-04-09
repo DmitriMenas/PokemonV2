@@ -1,10 +1,11 @@
 body {
     text-align: center;
 }
+
 div.gameboy {
-    margin: auto
+    margin: auto;
     display: flex;
-    position: absolute;
+    position: relative; /* Change position to relative */
     width: 90vw;
     height: 90vh;
 }
@@ -12,12 +13,14 @@ div.gameboy {
 #canvas {
     width: 400px;
     height: 400px;
-    margin-top: 210px;
-    margin-left: 550px;
-    border: 1.5px solid rgba(110,110,110,1.00);
+    /* Adjust margins to center the canvas */
+    top: 50%; /* Move 50% from the top */
+    left: 50%; /* Move 50% from the left */
+    margin-top: -200px; /* Half of canvas height */
+    margin-left: -200px; /* Half of canvas width */
+    border: 1.5px solid rgba(110, 110, 110, 1.00);
     border-radius: 20px;
-    box-shadow: 0 0 25px 20px rgba(49,49,49,1.00);
-    position: absolute;
-    display: flex;
+    box-shadow: 0 0 25px 20px rgba(49, 49, 49, 1.00);
+    position: absolute; /* Keep position as absolute */
     z-index: 2;
 }
