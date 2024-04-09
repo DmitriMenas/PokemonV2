@@ -1,26 +1,23 @@
 body {
-    text-align: center;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-div.gameboy {
-    margin: auto;
-    display: flex;
-    position: relative; /* Change position to relative */
+#gameboy {
     width: 90vw;
     height: 90vh;
+    z-index: 1;
 }
 
-#canvas {
-    width: 400px;
-    height: 400px;
-    /* Adjust margins to center the canvas */
-    top: 50%; /* Move 50% from the top */
-    left: 50%; /* Move 50% from the left */
-    margin-top: -200px; /* Half of canvas height */
-    margin-left: -200px; /* Half of canvas width */
-    border: 1.5px solid rgba(110, 110, 110, 1.00);
-    border-radius: 20px;
-    box-shadow: 0 0 25px 20px rgba(49, 49, 49, 1.00);
-    position: absolute; /* Keep position as absolute */
+canvas {
+    width: 470px;
+    height: 350px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 2;
 }
