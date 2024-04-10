@@ -1,5 +1,5 @@
 class Pokemon {
-	constructor(pokename, level, maxhealth, moves, imgfront, imgback) {
+	constructor(pokename, level, maxhealth, moves, imgfront, imgback, owner) {
 		this.pokename = pokename;
 		this.level = level;
 		this.health = maxhealth;
@@ -7,6 +7,7 @@ class Pokemon {
 		this.moves = moves;
 		this.imgfront = imgfront;
 		this.imgback = imgback;
+		this.owner = owner; // Set the 'owner' property
 		this.alive = true;
 	}
 
@@ -58,7 +59,7 @@ class Pokemon {
 	}
 };
 
-pokemon = [];
+let pokemon = [];
 pokemon.push(new Pokemon('PIKACHU', 50, 117, [moves['tackle'], moves['thundershock']], './assets/img/pikachu.png', './assets/img/pikachuback.png'));
 pokemon.push(new Pokemon('CHARIZARD', 50, 163, [moves['fire blast'], moves['mega punch']], './assets/img/charizard.png', './assets/img/charizardback.png'));
 pokemon.push(new Pokemon('BLASTOISE', 50, 180, [moves['hydro pump'], moves['skull bash']], './assets/img/blastoise.png', './assets/img/blastoiseback.png'));

@@ -1,29 +1,42 @@
-
+transition();
 let titlesfx = new Audio('./assets/sfx/pokemonopening.mp3');
+titlesfx.volume = 0.1;
+
 let battlesfx = new Audio('./assets/sfx/pokemonbattle.mp3');
+battlesfx.volume = 0.1;
+
 let victorysfx = new Audio('./assets/sfx/pokemonvictory.mp3');
+victorysfx.volume = 0.1;
+
+function playTitleSFX() {
+    titlesfx.volume = 0.1;
+    titlesfx.play();
+}
+
+function playBattleSFX() {
+    battlesfx.volume = 0.1;
+    battlesfx.play();
+}
+
+function playVictorySFX() {
+    victorysfx.volume = 0.1;
+    victorysfx.play();
+}
 
 let playerPokemon;
 let enemyPokemon;
 
 addListeners();
 
-// Define a function to redirect to index.html
-//function redirectToIndex() {
-   // window.location.href = 'index.html';
-//}
-
 function startButton() {
-    document.getElementById('startbutton').style.zIndex = '-1';
-    document.getElementById('battle').style.visibility = 'visible';
-    document.getElementById('opening').style.zIndex = '1';
-    titlesfx.play();
-    setTimeout(function() {
-        titlesfx.pause();
-        transition();
-        // After the loading screen is complete, redirect to index.html
-        //redirectToIndex();
-    }, 9000);
+	document.getElementById('startbutton').style.zIndex = '-1';
+	document.getElementById('battle').style.visibility = 'visible';
+	document.getElementById('opening').style.zIndex = '1';
+	titlesfx.play();
+	setTimeout(function() {
+		titlesfx.pause();
+		transition();
+	}, 9000);
 }
 
 function transition() {
@@ -37,7 +50,7 @@ function transition() {
 	setTimeout(function() {
 	document.getElementById('black').style.zIndex = '-1';
 	initGame();
-	}, 2800)
+	}, 3800)
 }
 
 //Starts the game and sets the beginning pokemon at random
@@ -168,11 +181,6 @@ function addListeners() {
 	document.getElementById('attack1').addEventListener('click', attack1);
 	document.getElementById('attack2').addEventListener('click', attack2);
 	// document.getElementById('items').addEventListener('click', potion);
-	// Add an event listener to the "Run" button
-	document.getElementById('run').addEventListener('click', function() {
-    // Redirect the user to index.html
-    	window.location.href = 'index.html';
-});
 }
 
 function removeListeners() {
