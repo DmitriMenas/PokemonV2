@@ -1,3 +1,4 @@
+
 let canvas;
 let canvasWidth = 800;
 let canvasHeight = 600;
@@ -186,7 +187,7 @@ class Player {
         if (this.inFightZone) {
             // Start the fight
             this.isFighting = true;
-            console.log("Fight Started!");
+            transition();
         } else {
             console.log("Fight failed, not in zone");
         }
