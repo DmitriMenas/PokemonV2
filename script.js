@@ -27,6 +27,7 @@ playerLeftImg.src = "./assets/characterside-left.png"
 
 let player;
 
+// Player class
 class Player {
     img;
     width = 46;
@@ -49,11 +50,13 @@ class Player {
         this.img = playerDownImg;
     }
 
+    // Draw player
     draw () {
         // Once image is loaded, draw the player
         context.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
+    // Player update manager
     update() {
         if (!this.isFighting) {
             this.updateMovement();
@@ -62,84 +65,85 @@ class Player {
         
     }
 
+    // Update the player's movement position
     updateMovement () {
-        // Desired movement amount
+        // Requested movement amounts
         let dx = 0;
         let dy = 0;
 
         // Update desired movement amounts.
+        // Check right
         if (this.movingRight) {
-            // Right
             dx += this.speed;
             this.img = playerRightImg;
         }
+        // Check left
         if (this.movingLeft) {
-            // Left
             dx -= this.speed;
             this.img = playerLeftImg;
         }
+        // Check up
         if (this.movingUp) {
-            // Up
             dy -= this.speed;
             this.img = playerUpImg;
         }
+        // Check down
         if (this.movingDown) {
-            // Down
             dy += this.speed;
             this.img = playerDownImg;
         }
 
         // Slow down the player if moving diagonally.
         if (dx != 0 && dy != 0) {
-            // Scale x and y by 
+            // Scale down the x and y movement
             dx *= 0.8;
             dy *= 0.8;
         }
 
-        // Process collisions
+        // Process collisions with barrier boxes
         for (let i = 0; i < barrierBoxes.length; i++) {
             let box = barrierBoxes[i];
-            // Check x direction
+            // Check if requested x position collides with a barrier
             if (collideObjects(this.x + dx, this.y, this.width, this.height,
                 box.x, box.y, box.width, box.height)) {
                 // Collision in x direction
                 // Check which way player was moving to align with side of object
                 if (player.movingRight) {
-                    // Align with left edge of object
+                    // Limit movement to left edge of object
                     dx = box.x - (player.x + player.width);
                 } else {
-                    // Alight with right edge of object
+                    // Limit movement to right edge of object
                     dx = -(player.x - (box.x + box.width));
                 }
             }
 
-            // Check y direction
+            // Check if the requested y position collides with a barrier
             if (collideObjects(this.x, this.y + dy, this.width, this.height,
                 box.x, box.y, box.width, box.height)) {
                 // Collision in y direction
                 // Check which wya player was moving to align with side of object
                 if (player.movingDown) {
-                    // Align with top edge of object
+                    // Limit movement to top edge of object
                     dy = box.y - (player.y + player.height);
                 } else {
-                    // Align with bottom edge of object
+                    // Limit movement to bottom edge of object
                     dy = -(player.y - (box.y + box.height));
                 }
             }
         }
 
-        // Update player position with the allowed change
+        // Update player position with the resulting allowed movement changes
         this.x += dx;
         this.y += dy;
 
-        // Don't fall off horizontal map edges
+        // Keep player inside the map horizontally
         if (this.x + this.width > canvasWidth) {
             this.x = canvasWidth - this.width;
         } else if (this.x < 0) {
             this.x = 0;
         }
 
-        // Don't fall off vertial map edges
+        // Keep palyer inside the map vertically
         if (this.y + this.height > canvasHeight) {
             this.y = canvasHeight - this.height;
         } else if (this.y < 0) {
@@ -149,7 +153,7 @@ class Player {
 
     // Check if the player can start a fight
     checkFight () {
-        // Check if player is in a fight zone.
+        // Update if player is in a fight zone.
         this.inFightZone = false;
         for (let i = 0; i < fightBoxes.length; i++) {
             let box = fightBoxes[i];
@@ -189,6 +193,7 @@ class Player {
     }
 }
 
+// Collision Box class
 class CollisionBox {
     constructor (x, y, width, height) {
         this.x = x;
@@ -203,7 +208,7 @@ class CollisionBox {
     }
 }
 
-// Collision boxes
+// Barrier Boxes (restrict the player's movement)
 let barrierBoxes = [];
 barrierBoxes.push(new CollisionBox(544, 73, 129, 96));
 barrierBoxes.push(new CollisionBox(54, 226, 140, 96));
@@ -213,10 +218,11 @@ barrierBoxes.push(new CollisionBox(258, 450, 156, 101));
 barrierBoxes.push(new CollisionBox(3, 3, 800, 92));
 barrierBoxes.push(new CollisionBox(1, 504, 64, 97));
 
+// Fight Boxes (zones where fights can be triggered)
 let fightBoxes = [];
 fightBoxes.push(new CollisionBox(293, 124, 151, 71));
 
-// Collide two box objects
+// Check if two boxes collide (each box has the form x, y, width, height)
 function collideObjects(obj1x, obj1y, obj1w, obj1h, obj2x, obj2y, obj2w, obj2h) {
     return obj1x + obj1w > obj2x && 
         obj1x < obj2x + obj2w && 
@@ -224,7 +230,8 @@ function collideObjects(obj1x, obj1y, obj1w, obj1h, obj2x, obj2y, obj2w, obj2h) 
         obj1y < obj2y + obj2h;
 }
 
-window.onload = function() {
+// Function called when the window loads
+window.onload = function () {
     canvas = document.getElementById("canvas");
     context = canvas.getContext("2d");
     canvas.width = canvasWidth;
@@ -239,12 +246,14 @@ window.onload = function() {
     document.addEventListener("keydown", titleScreen);
 }
 
+// Display the title screen for a short time
 function titleScreen() {
     context.drawImage(startImage, 0, 0, canvas.width, canvas.height);
     document.removeEventListener("keydown", titleScreen);
     setTimeout(startGame, 2000);
 }
 
+// Start the game
 function startGame ()  {
     // Game prestart stuff
     player = new Player(200, 300);
@@ -253,10 +262,11 @@ function startGame ()  {
     document.addEventListener("keydown", keyDown);
     document.addEventListener("keyup", keyUp);
 
-    // Start update loop
+    // Start the game's frame update loop
     setInterval(update, 1000/60);
 }
 
+// Game frame updates
 function update() {
     // Draw background
     context.drawImage(worldMap, 0, 0, canvas.width, canvas.height);
@@ -272,7 +282,7 @@ function update() {
     fightBoxes.forEach(box => box.draw());
 }
 
-// Key down presses
+// Keydown presses
 function keyDown (e) {
     switch (e.key) {
         // W or Up
@@ -325,7 +335,12 @@ function keyUp (e) {
 }
 
 
+
+
 // ########## Collision Box Placement Mode ##########
+// For developer use to add collision boxes
+console.log("CB placement activated, beginning calibration");
+console.log("Click the top-left and bottom-right corners of the map.");
 addEventListener("click", boxPosition);
 // Mouse click calibration (click the top left corner of the game)
 let calibrating = 0;
@@ -348,12 +363,17 @@ function boxPosition (e) {
         scaleX = canvasWidth / (e.x - xoff); // mouse distance / game distance
         scaleY = canvasHeight / (e.y - yoff);
         calibrating++;
+        console.log("Calibrated. Click the top left and bottom right corners of each box");
     } else {
         if (clickNum % 2 == 0) {
             nextX = e.x - xoff;
             nextY = e.y - yoff;
         } else {
-            console.log(`barrierBoxes.push(new CollisionBox(${Math.floor(nextX * scaleX)}, ${Math.floor(nextY * scaleY)}, ${Math.floor(((e.x - xoff) - nextX) * scaleX)}, ${Math.floor(((e.y - yoff) - nextY) * scaleY)}));`);
+            let collisionBoxString = `barrierBoxes.push(new CollisionBox(` + 
+            `${Math.floor(nextX * scaleX)}, ${Math.floor(nextY * scaleY)}, ` + 
+            `${Math.floor(((e.x - xoff) - nextX) * scaleX)},` + 
+            `${Math.floor(((e.y - yoff) - nextY) * scaleY)}));`;
+            console.log(collisionBoxString);
         }
         clickNum += 1;
     }
