@@ -114,6 +114,8 @@ function titleScreen() {
     setTimeout(startGame, 2000);
 }
 
+//hi
+
 function startGame ()  {
     // Game prestart stuff
     player = new Player(200, 300);
