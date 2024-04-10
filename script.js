@@ -45,33 +45,69 @@ class Player {
     }
 
     draw () {
-        console.log("drawing player");
         // Once image is loaded, draw the player
         context.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
-    update () {
-        // collision detection
+    update() {
+        this.updateMovement();
+    }
+
+    updateMovement () {
+        // Amount to be moved
         let dx = 0;
         let dy = 0;
 
-
-
         if (this.movingRight) {
-            this.x += this.speed;
+            dx += this.speed;
             this.img = playerRightImg;
         }
         if (this.movingLeft) {
-            this.x -= this.speed;
+            dx -= this.speed;
             this.img = playerLeftImg;
         }
         if (this.movingUp) {
-            this.y -= this.speed;
+            dy -= this.speed;
             this.img = playerUpImg;
         }
         if (this.movingDown) {
-            this.y += this.speed;
+            dy += this.speed;
             this.img = playerDownImg;
+        }
+
+        // Process collisions
+        for (let i = 0; i < collisionBoxes.length; i++) {
+            let box = collisionBoxes[i];
+            // Check x direction
+            if (collideObjects(this.x + dx, this.y, this.width, this.height,
+                box.x, box.y, box.width, box.height)) {
+                // Collision in x direction
+                dx = 0;
+            }
+
+             // Check y direction
+            if (collideObjects(this.x, this.y + dy, this.width, this.height,
+                box.x, box.y, box.width, box.height)) {
+                // Collision in x direction
+                dy = 0;
+            }
+        }
+
+        this.x += dx;
+        this.y += dy;
+
+        // Don't fall off horizontal map edges
+        if (this.x + this.width > canvasWidth) {
+            this.x = canvasWidth - this.width;
+        } else if (this.x < 0) {
+            this.x = 0;
+        }
+
+        // Don't fall off vertial map edges
+        if (this.y + this.height > canvasHeight) {
+            this.y = canvasHeight - this.height;
+        } else if (this.y < 0) {
+            this.y = 0;
         }
     }
 }
@@ -83,15 +119,31 @@ class CollisionBox {
         this.width = width;
         this.height = height;
     }
+
+    draw () {
+        context.fillStyle = "rgba(255,0,0,0.40)";
+        context.fillRect(this.x, this.y, this.width, this.height);
+    }
 }
 
-let CollisionBoxes = [];
+// Collision boxes
+let collisionBoxes = [];
+collisionBoxes.push(new CollisionBox(544, 73, 129, 96));
+collisionBoxes.push(new CollisionBox(34, 226, 160, 96));
+collisionBoxes.push(new CollisionBox(514, 303, 97, 120));
+collisionBoxes.push(new CollisionBox(674, 351, 127, 96));
+collisionBoxes.push(new CollisionBox(258, 450, 156, 101));
+collisionBoxes.push(new CollisionBox(3, 3, 800, 92));
+collisionBoxes.push(new CollisionBox(1, 504, 64, 97));
 
-// Add collision boxes
-CollisionBoxes.push(new CollisionBox(0, 0, 800, 50));
-CollisionBoxes.push(new CollisionBox(0, 0, 50, 600));
-CollisionBoxes.push(new CollisionBox(750, 0, 50, 600));
-CollisionBoxes.push(new CollisionBox(0, 550, 800, 50));
+
+// Collide two box objects
+function collideObjects(obj1x, obj1y, obj1w, obj1h, obj2x, obj2y, obj2w, obj2h) {
+    return obj1x + obj1w > obj2x && 
+        obj1x < obj2x + obj2w && 
+        obj1y + obj1h > obj2y && 
+        obj1y < obj2y + obj2h;
+}
 
 window.onload = function() {
     canvas = document.getElementById("canvas");
@@ -114,8 +166,6 @@ function titleScreen() {
     setTimeout(startGame, 2000);
 }
 
-//hi
-
 function startGame ()  {
     // Game prestart stuff
     player = new Player(200, 300);
@@ -135,6 +185,9 @@ function update() {
     // Draw player
     player.update();
     player.draw();
+
+    // Draw collision boxes
+    collisionBoxes.forEach(box => box.draw());
 }
 
 function keyDown (e) {
@@ -183,5 +236,40 @@ function keyUp (e) {
         case "ArrowRight":
             player.movingRight = false;
             break;
+    }
+}
+
+// Collision box locator code
+addEventListener("click", boxPosition);
+// Mouse click calibration (click the top left corner of the game)
+let calibrating = 0;
+let xoff;
+let yoff;
+let scaleX;
+let scaleY;
+// Alternate clicks for marking top left and bottom right corner of box
+let clickNum = 0;
+let nextX = 0;
+let nextY = 0;
+// Print box position to console
+function boxPosition (e) {
+    if (calibrating == 0) {
+        // First click goes in top left for calibration
+        xoff = e.x;
+        yoff = e.y;
+        calibrating++;
+        console.log("Calibrated top left");
+    } else if (calibrating == 1) {
+        scaleX = canvasWidth / (e.x - xoff); // mouse distance / game distance
+        scaleY = canvasHeight / (e.y - yoff);
+        calibrating++;
+    } else {
+        if (clickNum % 2 == 0) {
+            nextX = e.x - xoff;
+            nextY = e.y - yoff;
+        } else {
+            console.log(`collisionBoxes.push(new CollisionBox(${Math.floor(nextX * scaleX)}, ${Math.floor(nextY * scaleY)}, ${Math.floor(((e.x - xoff) - nextX) * scaleX)}, ${Math.floor(((e.y - yoff) - nextY) * scaleY)}));`);
+        }
+        clickNum += 1;
     }
 }
