@@ -187,6 +187,8 @@ class Player {
             // Start the fight
             this.isFighting = true;
             document.getElementById('game-window').style.zIndex = '3';
+            titlesfx.pause();
+            document.getElementById('game-window').style.visibility = 'visible';
             transition();
         } else {
             console.log("Fight failed, not in zone");
@@ -262,7 +264,9 @@ function startGame ()  {
     // Add keyboard event listeners
     document.addEventListener("keydown", keyDown);
     document.addEventListener("keyup", keyUp);
-
+    
+    //intro music
+    titlesfx.play();
     // Start the game's frame update loop
     setInterval(update, 1000/60);
 }
@@ -338,44 +342,44 @@ function keyUp (e) {
 
 
 
-// ########## Collision Box Placement Mode ##########
-// For developer use to add collision boxes
-console.log("CB placement activated, beginning calibration");
-console.log("Click the top-left and bottom-right corners of the map.");
-addEventListener("click", boxPosition);
-// Mouse click calibration (click the top left corner of the game)
-let calibrating = 0;
-let xoff;
-let yoff;
-let scaleX;
-let scaleY;
-// Alternate clicks for marking top left and bottom right corner of box
-let clickNum = 0;
-let nextX = 0;
-let nextY = 0;
-// Print box position to console
-function boxPosition (e) {
-    if (calibrating == 0) {
-        // First click goes in top left for calibration
-        xoff = e.x;
-        yoff = e.y;
-        calibrating++;
-    } else if (calibrating == 1) {
-        scaleX = canvasWidth / (e.x - xoff); // mouse distance / game distance
-        scaleY = canvasHeight / (e.y - yoff);
-        calibrating++;
-        console.log("Calibrated. Click the top left and bottom right corners of each box");
-    } else {
-        if (clickNum % 2 == 0) {
-            nextX = e.x - xoff;
-            nextY = e.y - yoff;
-        } else {
-            let collisionBoxString = `barrierBoxes.push(new CollisionBox(` + 
-            `${Math.floor(nextX * scaleX)}, ${Math.floor(nextY * scaleY)}, ` + 
-            `${Math.floor(((e.x - xoff) - nextX) * scaleX)},` + 
-            `${Math.floor(((e.y - yoff) - nextY) * scaleY)}));`;
-            console.log(collisionBoxString);
-        }
-        clickNum += 1;
-    }
-}
+// // ########## Collision Box Placement Mode ##########
+// // For developer use to add collision boxes
+// console.log("CB placement activated, beginning calibration");
+// console.log("Click the top-left and bottom-right corners of the map.");
+// addEventListener("click", boxPosition);
+// // Mouse click calibration (click the top left corner of the game)
+// let calibrating = 0;
+// let xoff;
+// let yoff;
+// let scaleX;
+// let scaleY;
+// // Alternate clicks for marking top left and bottom right corner of box
+// let clickNum = 0;
+// let nextX = 0;
+// let nextY = 0;
+// // Print box position to console
+// function boxPosition (e) {
+//     if (calibrating == 0) {
+//         // First click goes in top left for calibration
+//         xoff = e.x;
+//         yoff = e.y;
+//         calibrating++;
+//     } else if (calibrating == 1) {
+//         scaleX = canvasWidth / (e.x - xoff); // mouse distance / game distance
+//         scaleY = canvasHeight / (e.y - yoff);
+//         calibrating++;
+//         console.log("Calibrated. Click the top left and bottom right corners of each box");
+//     } else {
+//         if (clickNum % 2 == 0) {
+//             nextX = e.x - xoff;
+//             nextY = e.y - yoff;
+//         } else {
+//             let collisionBoxString = `barrierBoxes.push(new CollisionBox(` + 
+//             `${Math.floor(nextX * scaleX)}, ${Math.floor(nextY * scaleY)}, ` + 
+//             `${Math.floor(((e.x - xoff) - nextX) * scaleX)},` + 
+//             `${Math.floor(((e.y - yoff) - nextY) * scaleY)}));`;
+//             console.log(collisionBoxString);
+//         }
+//         clickNum += 1;
+//     }
+// }

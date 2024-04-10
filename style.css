@@ -4,6 +4,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+	background-color: black;
 }
 
 #gameboy {
@@ -67,8 +68,10 @@ button:focus {
 }
 
 #battle {
+	transform: scaleX(0.88) scaleY(0.72);
 	position: absolute;
 	visibility: hidden;
+	z-index: 2;
 }
 
 #pkmn-name {

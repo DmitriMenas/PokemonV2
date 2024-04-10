@@ -1,4 +1,3 @@
-transition();
 let titlesfx = new Audio('./assets/sfx/pokemonopening.mp3');
 titlesfx.volume = 0.1;
 
@@ -31,26 +30,19 @@ addListeners();
 function startButton() {
 	document.getElementById('startbutton').style.zIndex = '-1';
 	document.getElementById('battle').style.visibility = 'visible';
-	document.getElementById('opening').style.zIndex = '1';
-	titlesfx.play();
 	setTimeout(function() {
-		titlesfx.pause();
 		transition();
-	}, 9000);
+	}, 4000);
 }
 
 function transition() {
-	document.getElementById('black').src = './assets/img/black.png';
-	document.getElementById('black').style.zIndex = '1';
-	document.getElementById('opening').style.zIndex = '-1';
 	setTimeout(function() {
 	battlesfx.play();
 	}, 1000);
 
 	setTimeout(function() {
-	document.getElementById('black').style.zIndex = '-1';
 	initGame();
-	}, 3800)
+	}, 1000)
 }
 
 //Starts the game and sets the beginning pokemon at random
@@ -114,6 +106,20 @@ function cancelButton() {
 	document.getElementById('attack2').style.zIndex = '-1';
 	document.getElementById('b2').src = "";
 
+}
+
+function runButton() {
+		document.getElementById('game-window').style.visibility = 'hidden';
+		document.getElementById('battle').style.visibility = 'hidden';
+		document.getElementById('startbutton').style.zIndex = '-1';
+		document.getElementById('startbutton').style.visibility = 'hidden';
+		document.getElementById('battle').style.visibility = 'hidden';
+		document.getElementById('ending').style.zIndex = '-1';
+		document.getElementById('endingtext').style.zIndex = '-1';
+		battlesfx.pause();
+		titlesfx.play();
+		let endFight = true;	
+		return;
 }
 
 function attack1() {
@@ -180,7 +186,8 @@ function addListeners() {
 	document.getElementById('attackcancel').addEventListener('click', cancelButton);
 	document.getElementById('attack1').addEventListener('click', attack1);
 	document.getElementById('attack2').addEventListener('click', attack2);
-	// document.getElementById('items').addEventListener('click', potion);
+	//document.getElementById('items').addEventListener('click', potion);
+	document.getElementById('run').addEventListener('click', runButton);
 }
 
 function removeListeners() {
@@ -188,7 +195,8 @@ function removeListeners() {
 	document.getElementById('attackcancel').removeEventListener('click', cancelButton);
 	document.getElementById('attack1').removeEventListener('click', attack1);
 	document.getElementById('attack2').removeEventListener('click', attack2);
-	// document.getElementById('items').removeEventListener('click', potion);
+	//document.getElementById('items').removeEventListener('click', potion);
+	document.getElementById('run').addEventListener('click', runButton);
 }
 
 function endGame() {
@@ -197,4 +205,5 @@ function endGame() {
 	document.getElementById('endingtext').style.zIndex = '1';
 	battlesfx.pause();
 	victorysfx.play();
+	let endFight = true;
 }
