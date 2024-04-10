@@ -58,18 +58,4 @@ function startGame ()  {
     context.drawImage(worldMap, 0, 0, canvas.width, canvas.height);
     }, 2000);
     setInterval(update, 1000/60);
-
-    // Load player images
-    playerDownImg = new Image();
-    playerDownImg.src = "./assets/characterside-down.png";
-    player.img = playerDownImg;
-    playerDownImg.onload = function() {
-        // Once image is loaded, draw the player
-        context.drawImage(player.img, player.x, player.y, player.width, player.height);
-    };
-}
-
-function update() {
-    
-
 }
