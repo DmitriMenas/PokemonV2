@@ -36,7 +36,7 @@ class Player {
     movingLeft = false;
     movingUp = false;
     movingDown = false;
-    speed = 50; 
+    speed = 3; 
     minFightDelay = 3000
     fightAddedRandomDelay = 5000;
     inFightZone = false;
