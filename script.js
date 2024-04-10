@@ -129,7 +129,7 @@ class CollisionBox {
 // Collision boxes
 let collisionBoxes = [];
 collisionBoxes.push(new CollisionBox(544, 73, 129, 96));
-collisionBoxes.push(new CollisionBox(34, 226, 160, 96));
+collisionBoxes.push(new CollisionBox(54, 226, 140, 96));
 collisionBoxes.push(new CollisionBox(514, 303, 97, 120));
 collisionBoxes.push(new CollisionBox(674, 351, 127, 96));
 collisionBoxes.push(new CollisionBox(258, 450, 156, 101));
