@@ -197,6 +197,12 @@ class Player {
     }
 }
 
+// Used for other files to notify when a fight has ended
+function notifyFightEnded() {
+    // Tell player the fight is over
+    player.isFighting = false;
+}
+
 // Collision Box class
 class CollisionBox {
     constructor (x, y, width, height) {

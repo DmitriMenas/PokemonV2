@@ -119,7 +119,8 @@ function runButton() {
 		document.getElementById('endingtext').style.zIndex = '-1';
 		battlesfx.pause();
 		titlesfx.play();
-		let isFighting = false;	
+		// Notify the main file that the fight ended
+		notifyFightEnded();
 		return;
 }
 
@@ -206,5 +207,6 @@ function endGame() {
 	document.getElementById('endingtext').style.zIndex = '1';
 	battlesfx.pause();
 	victorysfx.play();
-	let endFight = true;
+	// Notify the main file that the fight ended
+	notifyFightEnded();
 }
