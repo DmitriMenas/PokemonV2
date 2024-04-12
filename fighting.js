@@ -31,9 +31,7 @@ addListeners();
 function startButton() {
 	document.getElementById('startbutton').style.zIndex = '-1';
 	document.getElementById('battle').style.visibility = 'visible';
-	setTimeout(function() {
-		transition();
-	}, 4000);
+	transition();
 }
 
 function transition() {
@@ -44,24 +42,30 @@ function transition() {
 	setTimeout(function() {
 	initGame();
 	}, 1000)
+	console.log('transitioned');
 }
 
 //Starts the game and sets the beginning pokemon at random
 //Pokemon max of six for enemy and player
 function initGame() {
-	for (var i = 0; i < 6; i++) {
-		var tempPokemon = pokemon.splice(Math.floor(Math.random() * pokemon.length), 1)[0];
-		tempPokemon.owner = 'player';
-		playerParty.push(tempPokemon);
-		tempPokemon = pokemon.splice(Math.floor(Math.random() * pokemon.length), 1)[0];
-		tempPokemon.owner = 'enemy';
-		enemyParty.push(tempPokemon);
-	}
-	playerPokemon = playerParty[0];
-	console.log(playerPokemon);
-	enemyPokemon = enemyParty[0];
+    for (var i = 0; i < 6; i++) {
+        var tempPokemon = pokemon.splice(Math.floor(Math.random() * pokemon.length), 1)[0];
+        if (tempPokemon) {
+            tempPokemon.owner = 'player';
+            playerParty.push(tempPokemon);
+        }
+        
+        tempPokemon = pokemon.splice(Math.floor(Math.random() * pokemon.length), 1)[0];
+        if (tempPokemon) {
+            tempPokemon.owner = 'enemy';
+            enemyParty.push(tempPokemon);
+        }
+    }
+    playerPokemon = playerParty[0];
+    console.log(playerPokemon);
+    enemyPokemon = enemyParty[0];
 
-	showPokemon();
+    showPokemon();
 }
 
 function showPokemon(){
@@ -118,7 +122,8 @@ function runButton() {
 		document.getElementById('ending').style.zIndex = '-1';
 		document.getElementById('endingtext').style.zIndex = '-1';
 		battlesfx.pause();
-		titlesfx.play();
+		titlesfx.pause();
+		victorysfx.pause();
 		// Notify the player that the fight ended
 		player.isFighting = false;
 		return;

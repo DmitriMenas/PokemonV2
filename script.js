@@ -62,6 +62,7 @@ class Player {
         if (!this.isFighting) {
             this.updateMovement();
             this.checkFight();
+            titlesfx.play();
         }
         
     }
@@ -190,7 +191,6 @@ class Player {
             document.getElementById('game-window').style.zIndex = '3';
             titlesfx.pause();
             document.getElementById('game-window').style.visibility = 'visible';
-            transition();
         } else {
             console.log("Fight failed, not in zone");
         }
