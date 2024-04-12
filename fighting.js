@@ -1,3 +1,4 @@
+
 let titlesfx = new Audio('./assets/sfx/pokemonopening.mp3');
 titlesfx.volume = 0.1;
 
@@ -118,7 +119,7 @@ function runButton() {
 		document.getElementById('endingtext').style.zIndex = '-1';
 		battlesfx.pause();
 		titlesfx.play();
-		let endFight = true;	
+		let isFighting = false;	
 		return;
 }
 
